@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SCL-90 心理健康自评量表</title>
+  <link rel="stylesheet" href="style.css?v=20261015">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="site-head">
+    <h1>SCL-90 心理健康自评量表</h1>
+    <p>90 道题 · 10 个维度 · 看清你最近一周的身心状态</p>
+  </header>
+
+  <!-- ================= 封面 ================= -->
+  <section class="page active" id="page-intro">
+    <div class="card intro-card">
+      <h2 class="blk-title">关于这个量表</h2>
+      <p>SCL-90（症状自评量表）是目前使用最广泛的心理健康自查工具之一，包含 90 个项目，覆盖十个症状维度，用来反映一个人在一段时间内主观感受到的身心不适。</p>
+      <p>它帮你看清的是：<strong>最近一周，你身上哪些信号在变强</strong>。请按真实感受作答，不要花太多时间斟酌，凭第一反应选。</p>
+    </div>
+
+    <div class="card intro-card">
+      <h2 class="blk-title">十个评估维度</h2>
+      <div class="factor-grid" id="factorGrid"></div>
+    </div>
+
+    <div class="card intro-card">
+      <h2 class="blk-title">结果怎么看</h2>
+      <p>完成后你会拿到：总分、单项均分、阳性项目数、十因子得分表与雷达图，以及每个因子的解读和针对你最高因子的专属建议。</p>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="card intro-card">
+      <h2 class="blk-title">作答说明</h2>
+      <p>共 90 题，预计 12–18 分钟。请根据你<strong>最近一周</strong>的实际感受选择：从无 / 很轻 / 中等 / 偏重 / 严重。</p>
+      <p>建议在安静、不受打扰的环境里完成。所有作答只在你自己的设备上处理，不会上传。</p>
+    </div>
+
+    <div class="disclaimer">本量表为自我觉察参考，<strong>不能作为医学结论</strong>，也不能替代心理咨询师或医生的专业评估。如果你持续感到困扰，请寻求专业帮助。</div>
+
+    <div class="start-box">
+      <button class="btn-main" onclick="startTest()">开始测试</button>
+      <div class="start-tip">90 题 · 约 15 分钟</div>
+    </div>
+  </section>
+
+  <!-- ================= 答题 ================= -->
+  <section class="page" id="page-test">
+    <div class="test-top">
+      <div class="test-title">请按最近一周的实际感受选择</div>
+      <div class="q-count">第 <span id="qNow">1</span> / 90 题</div>
+    </div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="encourage" id="encourage"></div>
+
+    <div class="card q-card">
+      <div class="q-text" id="qText"></div>
+      <div class="opt-list" id="optList"></div>
+    </div>
+
+    <div class="test-ctrl">
+      <button class="btn-ghost" id="prevBtn" onclick="prevQ()">上一题</button>
+      <button class="btn-ghost" id="nextBtn" onclick="nextQ()">跳过</button>
+    </div>
+  </section>
+
+  <!-- ================= 计算中 ================= -->
+  <section class="page" id="page-loading">
+    <div class="card loading-card">
+      <div class="spinner"></div>
+      <div class="loading-txt">正在计算你的十个维度得分…</div>
+    </div>
+  </section>
+
+  <!-- ================= 结果 ================= -->
+  <section class="page" id="page-result">
+    <div class="res-head">
+      <h2>测试结果分析</h2>
+      <p>以下是根据你的 90 道作答生成的报告</p>
+    </div>
+
+    <div class="score-grid">
+      <div class="card score-card">
+        <div class="score-lab">SCL-90 总分</div>
+        <div class="score-num" id="totalScore">0</div>
+        <div class="score-badge" id="totalBadge">正常</div>
+      </div>
+      <div class="card score-card sub">
+        <div class="score-lab">单项均分</div>
+        <div class="score-num" id="avgScore">0.0</div>
+        <div class="score-hint">总分 ÷ 90</div>
+      </div>
+    </div>
+
+    <div class="score-grid two">
+      <div class="card score-card sub">
+        <div class="score-lab">阳性项目数</div>
+        <div class="score-num" id="posCount">0</div>
+        <div class="score-hint">得分 &gt; 1 的题目数（常模 ≥ 43 需关注）</div>
+      </div>
+      <div class="card score-card sub">
+        <div class="score-lab">阳性症状均分</div>
+        <div class="score-num" id="posAvg">0.0</div>
+        <div class="score-hint">有症状题目的平均严重程度</div>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <h2 class="blk-title">十因子雷达图</h2>
+      <div class="radar-box"><canvas id="radarCanvas"></canvas></div>
+      <div class="legend" id="legend2"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="blk-title">各因子得分详情</h2>
+      <p class="blk-sub">因子均分 = 该因子各题得分之和 ÷ 题目数</p>
+      <div class="table-wrap"><table class="factor-table" id="factorTable"></table></div>
+      <div class="tips">
+        <strong>参考：</strong>按国内常模，总分超过 160 分、或单项均分超过 2 分、或阳性项目数超过 43 项，提示值得进一步关注；总分超过 200 分通常说明心理不适已比较明显。这只是参考范围，不是结论。
+      </div>
+    </div>
+
+    <h2 class="sec-h">十个因子的逐项解读</h2>
+    <div id="factorDetails"></div>
+
+    <h2 class="sec-h">针对你最高因子的专属建议</h2>
+    <div id="topAdvice"></div>
+
+    <h2 class="sec-h">整体建议</h2>
+    <div id="totalAdvice"></div>
+
+    <div class="disclaimer" id="resDisclaimer">
+      本量表为自我觉察参考，<strong>不能作为医学结论</strong>，也不能替代心理咨询师或医生的专业评估。结果受作答时状态影响，仅供你了解自己参考。
+    </div>
+
+    <div class="res-foot">
+      <button class="btn-main" onclick="restart()">重新测试</button>
+      <button class="btn-ghost" onclick="shareResult()">分享结果</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="data-scl90.js?v=20261015"></script>
+<script src="app.js?v=20261015"></script>
+</body>
+</html>
