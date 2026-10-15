@@ -24,6 +24,8 @@ function abbr(n) { return ABBR[n] || n.replace('症状', ''); }
 function show(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  // 答题页开启压缩模式：收起大页头、压缩间距，保证手机一屏放下
+  document.body.classList.toggle('quiz-mode', id === 'page-test');
   window.scrollTo(0, 0);
 }
 

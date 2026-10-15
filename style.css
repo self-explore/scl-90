@@ -119,6 +119,31 @@ button { font-family: inherit; cursor: pointer; }
 .opt.on .opt-k { background: linear-gradient(135deg,#6ba3e0,#4f7fc4); color: #fff; border-color: transparent; }
 .test-ctrl { display: flex; gap: 12px; justify-content: center; margin-top: 4px; }
 
+/* ---------- 答题压缩模式（手机一屏放下） ---------- */
+body.quiz-mode .wrap { padding-top: 12px; padding-bottom: 24px; }
+body.quiz-mode .site-head { margin-bottom: 12px; }
+body.quiz-mode .site-head h1 { font-size: 17px; margin-bottom: 3px; letter-spacing: 0; }
+body.quiz-mode .site-head p { display: none; }
+body.quiz-mode .test-top { margin-bottom: 8px; }
+body.quiz-mode .progress { margin-bottom: 8px; }
+body.quiz-mode .encourage { margin-bottom: 8px; min-height: 18px; font-size: 12px; line-height: 1.5; }
+body.quiz-mode .q-card { padding: 18px 16px; margin-bottom: 12px; }
+body.quiz-mode .q-text { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+body.quiz-mode .opt-list { gap: 8px; }
+body.quiz-mode .opt { padding: 11px 14px; font-size: 14px; border-radius: 12px; }
+body.quiz-mode .opt .opt-k { width: 24px; height: 24px; font-size: 11.5px; }
+body.quiz-mode .test-ctrl { margin-top: 2px; }
+body.quiz-mode .btn-ghost { padding: 10px 24px; }
+
+/* 矮屏（如 iPhone SE / 小窗模式）进一步压缩 */
+@media (max-height: 640px) {
+  body.quiz-mode .q-card { padding: 14px 14px; }
+  body.quiz-mode .q-text { font-size: 16px; margin-bottom: 10px; }
+  body.quiz-mode .opt-list { gap: 7px; }
+  body.quiz-mode .opt { padding: 9px 13px; }
+  body.quiz-mode .site-head h1 { font-size: 15px; }
+}
+
 /* ---------- 计算中 ---------- */
 .loading-card { text-align: center; padding: 60px 20px; }
 .spinner {
